@@ -7,7 +7,7 @@
 ; (Note that the rotated number can be greater than the original number.) Given a positive integer N, 
 ; return the number of confusing numbers between 1 and N inclusive.
 
-(def valid-nums [\0 \1 \6 \8 \9])
+(def valid-nums #{\0 \1 \6 \8 \9})
 
 (defn valid? [num] (.contains valid-nums num))
 
@@ -44,7 +44,7 @@
 
   (confusing? "1069")
 
-  (rotated-digits 145600)
+  (time (rotated-digits 1456020))
 
   (->> (range 1 (+ 1 91) 2)
        (map str)
