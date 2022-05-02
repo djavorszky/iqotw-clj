@@ -15,10 +15,8 @@
   "Returns true if the two ranges overlap, false otherwise. Also returns false if either c1 or c2 is nil"
   (true? (and c1 c2 (>= (second c1) (first c2)))))
 
-(comment
-  (use 'clojure.test)
 
-  (run-tests)
+  (use 'clojure.test)
 
   (deftest test-overlaps?
     (testing "yep"
@@ -47,4 +45,10 @@
     (is (= (merge-overlaps [[1 2] [2 7]]) [[1 7]])))
 
   (testing "non-overlaps"
-    (is (= (merge-overlaps [[1 2] [3 4]]) [[1 2] [3 4]]))))
+    (is (= (merge-overlaps [[1 2] [3 4]]) [[1 2] [3 4]])))
+
+(comment
+
+  (run-tests)
+
+)
