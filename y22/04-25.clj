@@ -27,7 +27,7 @@
 
     (testing "nope"
       (is (false? (overlaps? [1 2] [3 4])))
-      (is (false? (overlaps? nil [3 4]))))
+      (is (false? (overlaps? nil [3 4])))
     (is (false? (overlaps? [1 2] nil)))))
 
 
@@ -46,6 +46,7 @@
 
   (testing "non-overlaps"
     (is (= (merge-overlaps [[1 2] [3 4]]) [[1 2] [3 4]])))
+)
 
 (comment
 
