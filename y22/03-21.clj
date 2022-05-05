@@ -1,17 +1,19 @@
-(defn smallest-interval [times]
+(defn to-min
+  "Convert 'hh:mm' format to minutes-since-midnight"
+  [hhmm]
+  (+ (* 60 (. Integer parseInt (subs hhmm 0 2)))
+     (. Integer parseInt (subs hhmm 3))))
+
+
+(defn smallest-interval
   "Given a list of times in a 24-hour period, return the smallest interval between two times in the list."
+  [times]
   (->> times
        (map to-min)
        (sort)
        (partition 2 1)
        (map #(- (second %) (first %)))
        (apply min)))
-
-
-(defn to-min [hhmm]
-  "Convert 'hh:mm' format to minutes-since-midnight"
-  (+ (* 60 (. Integer parseInt (subs hhmm 0 2)))
-     (. Integer parseInt (subs hhmm 3))))
 
 (comment
 

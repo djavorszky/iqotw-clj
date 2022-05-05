@@ -4,11 +4,12 @@
 ; a # means a backspace character (deleting backwards), and
 ; a % means a delete character (deleting forwards). 
 
-(use '[clojure.string :only (replace)])
+(refer 'clojure.string :only '[replace])
 
 (def del-fwd #"(%[ a-zA-Z0-9])|(%$)")
 
 (def del-back #"([ a-zA-Z0-9]#)|(^#)")
+
 (defn parse [s] (loop [res s]
                   (let [p (-> res
                               (replace del-back "")
@@ -22,7 +23,6 @@
 
 (comment
 
-  (def s1 "a##ba")
   (def s2 "a#b#c#%d%f%%ga")
 
   (.contains "" "#")

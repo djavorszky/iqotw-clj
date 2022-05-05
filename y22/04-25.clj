@@ -1,33 +1,36 @@
 
-(defn merge-overlaps [ranges]
+(defn set-last
+  "Replaces the last item in the coll with x"
+  [coll x]
+  (conj (pop coll) x))
+
+(defn overlaps?
+  "Returns true if the two ranges overlap, false otherwise. Also returns false if either c1 or c2 is nil"
+  [c1 c2]
+  (true? (and c1 c2 (>= (second c1) (first c2)))))
+
+
+(defn merge-overlaps
   "Given an array of intervals, merge the overlapping intervals, and return an array of the resulting intervals."
+  [ranges]
   (->> ranges
        (sort-by first)
        (reduce #(if (overlaps? (peek %1) %2)
                   (set-last %1 [(first (peek %1)) (second %2)])
                   (conj %1 %2)) [])))
 
-(defn set-last [coll x]
-  "Replaces the last item in the coll with x"
-  (conj (pop coll) x))
+(use 'clojure.test)
 
-(defn overlaps? [c1 c2]
-  "Returns true if the two ranges overlap, false otherwise. Also returns false if either c1 or c2 is nil"
-  (true? (and c1 c2 (>= (second c1) (first c2)))))
+(deftest test-overlaps?
+  (testing "yep"
+    (is (true? (overlaps? [1 2] [2 3])))
+    (is (true? (overlaps? [1 3] [2 6])))
+    (is (true? (overlaps? [1 5] [2 3])))
+    (is (true? (overlaps? [1 2] [2 3]))))
 
-
-  (use 'clojure.test)
-
-  (deftest test-overlaps?
-    (testing "yep"
-      (is (true? (overlaps? [1 2] [2 3])))
-      (is (true? (overlaps? [1 3] [2 6])))
-      (is (true? (overlaps? [1 5] [2 3])))
-      (is (true? (overlaps? [1 2] [2 3]))))
-
-    (testing "nope"
-      (is (false? (overlaps? [1 2] [3 4])))
-      (is (false? (overlaps? nil [3 4])))
+  (testing "nope"
+    (is (false? (overlaps? [1 2] [3 4])))
+    (is (false? (overlaps? nil [3 4])))
     (is (false? (overlaps? [1 2] nil)))))
 
 
@@ -45,11 +48,8 @@
     (is (= (merge-overlaps [[1 2] [2 7]]) [[1 7]])))
 
   (testing "non-overlaps"
-    (is (= (merge-overlaps [[1 2] [3 4]]) [[1 2] [3 4]])))
-)
+    (is (= (merge-overlaps [[1 2] [3 4]]) [[1 2] [3 4]]))))
 
 (comment
 
-  (run-tests)
-
-)
+  (run-tests))
