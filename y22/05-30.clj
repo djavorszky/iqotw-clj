@@ -76,12 +76,6 @@
 
   (all-unique-loop "Cassidy")
 
-  (->> test-word
-       (sort)
-       (partition 2 1)
-       (map #(apply = %))
-       (every? false?)
-       )
   ;;; Actual tests ;;;
 
   (require '[clojure.test :as t])
@@ -91,29 +85,31 @@
   (t/deftest test-helpers
 
     (t/testing "All unique"
-      (let [passes ["with" "maps" "cat" "dog"]
-            fails  ["all" "unique" "Cassidy"]]
+      (let [passes ["with" "maps" "cat" "dog"]]
         (t/is (every? #(true? (all-unique %)) passes))
-        (t/is (every? #(false? (all-unique %)) fails))
         (t/is (every? #(true? (all-unique-sort %)) passes))
+        (t/is (every? #(true? (all-unique-loop %)) passes)))
+
+      (let [fails  ["all" "unique" "Cassidy"]]
+        (t/is (every? #(false? (all-unique %)) fails))
         (t/is (every? #(false? (all-unique-sort %)) fails))
-        (t/is (every? #(true? (all-unique-loop %)) passes))
         (t/is (every? #(false? (all-unique-loop %)) fails))))
 
     (t/testing "All lowercase unique"
-      (let [passes ["With" "maps" "cat" "dog"]
-            fails  ["Bob" "Unique" "CaSsidy"]]
+      (let [passes ["With" "maps" "cat" "dog"]]
         (t/is (every? #(true? (all-unique-lower-case %)) passes))
-        (t/is (every? #(false? (all-unique-lower-case %)) fails))
         (t/is (every? #(true? (all-unique-sort-lower-case %)) passes))
+        (t/is (every? #(true? (all-unique-loop-lower-case %)) passes)))
+
+      (let [fails  ["Bob" "Unique" "CaSsidy"]]
+        (t/is (every? #(false? (all-unique-lower-case %)) fails))
         (t/is (every? #(false? (all-unique-sort-lower-case %)) fails))
-        (t/is (every? #(true? (all-unique-loop-lower-case %)) passes))
         (t/is (every? #(false? (all-unique-loop-lower-case %)) fails)))))
 
   ;;; Benchmarking ;;;
   (require '[criterium.core :as b])
 
-  ;; Benching both versions for comparison. The string contains one duplicate character at the end (\s)
+  ;; Benching both versions for comparison.
 
   (defn make-test-word
     "Returns a random permutation of unique characters"
@@ -147,3 +143,4 @@
   ; result: ~8.12 µs
 
   )
+  
