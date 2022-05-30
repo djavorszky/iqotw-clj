@@ -6,18 +6,11 @@
 
 ;; So I wrote 3 (+ lower-case versions), as well as tests and benchmarks
 
-(defn inc-val
-  "Increments the value of key in map if present, sets it to 1 otherwise"
-  [map key]
-  (->> (get map key 0)
-       (inc)
-       (assoc map key)))
-
 (defn all-unique
   "Returns true if all characters in text are unique, false otherwise"
   [text]
   (->> text
-       (reduce inc-val {})
+       (frequencies)
        (vals)
        (every? #(= % 1))))
 
@@ -64,8 +57,6 @@
   ;;; Testing bunch of stuff ;;;
 
   (def m {\a 10})
-
-  (inc-val m \b)
 
   (empty? nil)
 
@@ -121,7 +112,7 @@
   (def test-word "WLPRUtyjVZhHENXFfvrbkJuznBlmdKoqxIeMcwigGYATOCpDaQSs")
 
   (b/bench (all-unique test-word))
-  ; Result: ~14.54 µs
+  ; Result: ~15.62 µs
 
   (b/bench (all-unique-sort test-word))
   ; Result: ~26.27 µs
@@ -134,7 +125,7 @@
 
 
   (b/bench (all-unique test-word-with-duplicate))
-  ; Result: ~13.05 µs
+  ; Result: ~14.35 µs
 
   (b/bench (all-unique-sort test-word-with-duplicate))
   ; Results: ~19.91 µs
