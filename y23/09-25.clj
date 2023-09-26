@@ -48,8 +48,10 @@
 
 
 (comment
-  
-  (type-matchup "fairy")
+
+  (type-matchup "fairy") ; => "Weak against poison, and steel. Strong against fighting, dragon, and dark"
+  (type-matchup "fighting") ; => "Weak against flying, psychic, and fairy. Strong against normal, rock, steel, ice, and dark"
+  (type-matchup "dan") ; => "What do you mean dan? That's not a type!"
 
 
   (def fire (fetch-type-info "fire"))
@@ -90,4 +92,5 @@
   (->> (get-in fighting ["damage_relations" "double_damage_from"])
        (map #(get % "name")))
 
-  (json/read-str (slurp pokeapi-base-url)))
+  (json/read-str (slurp pokeapi-base-url))
+  )
